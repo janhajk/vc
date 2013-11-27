@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Virtual Currency Dashboard</title>
+        
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="vc.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="styles.css" />
+        
+        <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+        
+    </head>
+    <body>
+        <div id="status"></div>
+        <div id="header">
+        </div>
+        <div id="content">
+            <ul>
+                <li><a href="#tabs-1">Tab 1</a></li>
+                <li><a href="#tabs-2">Tab 2</a></li>
+            </ul> 
+            <div id="tabs-1" class="box">
+                <div id="chart_div" style="width: 100%; height: 100vh;"></div>
+            </div>
+            <div id="tabs-2" class="box">
+            </div>
+        </div>
+        <div id="footer"></div>
+        <script>
+            (function() {
+                $(document).ready(function() {
+                    // Make jqQuery.UI tabs
+                    $('#content').tabs();
+                });
+            })();
+        </script>
+    </body>
+</html>

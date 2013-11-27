@@ -1,0 +1,14 @@
+{
+  "name": "Virtual-Currency-Dashboard",
+  "description": "to show you a Dashboard with your current funds",
+  "version": "0.0.1",
+  "scripts": {
+          "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.x",
+    "mongoose": "*",
+    "request": "*",
+    "btce": "*"
+  }
+}
