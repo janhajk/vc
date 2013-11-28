@@ -1,39 +1,38 @@
 var step = 5; // in secondes
+var initial;
+
 (function() {
     $(document).ready(function() {
         
-        var verlauf = [['Time', 'LTC-BTC', 'LTC-BTC GM', 'BTC-USD', 'BTC-USD GM', 'LTC-USD', 'LTC-USD GM'/*, 'LTC-(USD-BTC)'*/]];
+        var verlauf= new google.visualization.DataTable({
+            cols: [{id: 'time', label: 'Time', type: 'datetime'},
+                   {id: 'ltc_btc'   , label: 'LTC-BTC'   , type: 'number'},
+                   {id: 'ltc_btc_gm', label: 'LTC-BTC GM', type: 'number'},
+                   {id: 'ltc_usd'   , label: 'LTC-USD'   , type: 'number'},
+                   {id: 'ltc_usd_gm', label: 'LTC-USD GM', type: 'number'},
+                   {id: 'btc_usd'   , label: 'BTC-USD'   , type: 'number'},
+                   {id: 'btc_usd_gm', label: 'BTC-USD GM', type: 'number'}]});
         
-        var ltc = {
-            amount : 53,
-            paid   : 0.9636
-        };
-        var initial;
         
         var update = function() {
-            $.getJSON('/ltc', function(last){
-                var date = new Date;
-                if (verlauf.length === 1) initial = last;
-                var wertNow = ltc.amount * last.ltc_btc;
-                var change = wertNow/ltc.paid - 1;
-                var change$ = change*ltc.paid*last.btc_usd;
-                change$ = change$.toFixed(1);
-                change = Math.round(change*1000)/1000*100;
-                var changeBTC_USD = getChange(verlauf.length > 1 ? initial.btc_usd : last.btc_usd, last.btc_usd);
-                var changeLTC_USD = getChange(verlauf.length > 1 ? initial.ltc_usd : last.ltc_usd, last.ltc_usd);
-                var changeLTC_BTC = getChange(verlauf.length > 1 ? initial.ltc_btc : last.ltc_btc, last.ltc_btc);
-                verlauf.push(
-                    [date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+            $.getJSON('/ticker/update', function(last){
+                var c = verlauf.getNumberOfRows();
+                if (c === 0) initial = last;
+                var changeBTC_USD = getChange(c ? initial.btc_usd : last.btc_usd, last.btc_usd);
+                var changeLTC_USD = getChange(c ? initial.ltc_usd : last.ltc_usd, last.ltc_usd);
+                var changeLTC_BTC = getChange(c ? initial.ltc_btc : last.ltc_btc, last.ltc_btc);
+                verlauf.addRow([
+                    new Date(),
                     changeLTC_BTC,
-                    (verlauf.length > 1 ? geometricMean(verlauf, 1, 20) : changeLTC_BTC),
-                    changeBTC_USD,
-                    (verlauf.length > 1 ? geometricMean(verlauf, 3, 20) : changeBTC_USD),
+                    (c ? geometricMean(verlauf, 1, 20) : changeLTC_BTC),
                     changeLTC_USD,
-                    (verlauf.length > 1 ? geometricMean(verlauf, 5, 20) : changeLTC_USD),
+                    (c ? geometricMean(verlauf, 3, 20) : changeLTC_USD),
+                    changeBTC_USD,
+                    (c ? geometricMean(verlauf, 5, 20) : changeBTC_USD),
                 ]);
-                change = change.toFixed(1);
-                document.title = last.ltc_btc + ', ' + changeLTC_BTC + '%';
-                drawChart(google.visualization.arrayToDataTable(verlauf));
+                document.title = 'LTC-BTC: ' + last.ltc_btc + ', ' + changeLTC_BTC.toFixed(1) + '%';
+                $('#content li:first a').html(last.ltc_btc)
+                drawChart(verlauf);
             });
         };
         update();
@@ -57,11 +56,11 @@ var getChange = function(startVal, curVal) {
  */
 var geometricMean = function(data, index, last) {
     var i;
-    var len = data.length-1;
+    var len = data.getNumberOfRows();
     if (last > len) last = len;
-    var gMittel = data[len+1-last][index]+1000;
-    for (i = len+2-last; i < data.length; i++) {
-        gMittel = gMittel * (data[i][index]+1000);
+    var gMittel = data.getValue(0, index)+1000;
+    for (i = len-last+1; i < len; i++) {
+        gMittel = gMittel * (data.getValue(i, index)+1000);
     }
     return Math.pow(gMittel, 1/last)-1000;
 };
@@ -73,10 +72,34 @@ google.load("visualization", "1", {
 
 var drawChart = function(data) {
     var options = {
-        title: 'Ltc performance history'
+        title: 'Ltc performance history',
+        colors: [increaseBrightness('#7A7A7A',50),'#7A7A7A', increaseBrightness('#2155FF',50),'#2155FF',increaseBrightness('#FFCC00',50),'#FFCC00']
     };
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     chart.draw(data, options);
+};
+
+
+
+
+
+var increaseBrightness = function(hex, percent){
+    // strip the leading # if it's there
+    hex = hex.replace(/^\s*#|\s*$/g, '');
+
+    // convert 3 char codes --> 6, e.g. `E0F` --> `EE00FF`
+    if(hex.length == 3){
+        hex = hex.replace(/(.)/g, '$1$1');
+    }
+
+    var r = parseInt(hex.substr(0, 2), 16),
+        g = parseInt(hex.substr(2, 2), 16),
+        b = parseInt(hex.substr(4, 2), 16);
+
+    return '#' +
+       ((0|(1<<8) + r + (256 - r) * percent / 100).toString(16)).substr(1) +
+       ((0|(1<<8) + g + (256 - g) * percent / 100).toString(16)).substr(1) +
+       ((0|(1<<8) + b + (256 - b) * percent / 100).toString(16)).substr(1);
 };
 
 

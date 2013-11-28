@@ -9,6 +9,7 @@
     "express": "3.x",
     "mongoose": "*",
     "request": "*",
-    "btce": "*"
+    "btce": "*",
+    "xml2js": "*"
   }
 }

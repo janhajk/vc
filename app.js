@@ -5,6 +5,7 @@ var fs       = require('fs');
 var BTCE     = require('btce');
 
 var db       = require(__dirname + '/database/database.js');
+var news     = require(__dirname + '/lib/news.js');
 
 var app = express();
 app.configure(function(){
@@ -32,7 +33,7 @@ app.get('/', auth, function(req, res) {
 
 
 
-app.get('/ltc', auth, function(req, res) {
+app.get('/ticker/update', auth, function(req, res) {
     var btceTrade = new BTCE(config.btce_key, config.btce_sign);
     var pairs = {
         ltc_btc: undefined,
@@ -57,6 +58,12 @@ app.get('/ltc', auth, function(req, res) {
             }
         })(pair));
     }
+});
+
+app.get('/news', auth, function(req, res){
+    news.get(function(news){
+        res.json(news);
+    });
 });
 
 db.connect(function(){
