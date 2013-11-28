@@ -66,6 +66,8 @@ app.get('/news', auth, function(req, res){
     });
 });
 
-db.connect(function(){
-    app.listen(app.get('port'));
-});
+//db.connect(function(){
+    app.listen(app.get('port'), function(){
+      console.log('Express server listening on port ' + app.get('port'));
+    });
+//});
