@@ -1,3 +1,7 @@
+body {
+    overflow: hidden;
+}
+
 #tabs-1 {
     position: relative;
 }
