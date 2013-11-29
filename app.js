@@ -38,7 +38,9 @@ app.get('/ticker/update', auth, function(req, res) {
     var pairs = {
         ltc_btc: undefined,
         btc_usd: undefined,
-        ltc_usd: undefined
+        ltc_usd: undefined,
+        ppc_btc: undefined,
+        ftc_btc: undefined
     };
     for (var pair in pairs) {
         btceTrade.ticker({ pair: pair }, (function(pair){

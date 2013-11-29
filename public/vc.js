@@ -11,7 +11,11 @@ var initial;
                    {id: 'ltc_usd'   , label: 'LTC-USD'   , type: 'number'},
                    {id: 'ltc_usd_gm', label: 'LTC-USD GM', type: 'number'},
                    {id: 'btc_usd'   , label: 'BTC-USD'   , type: 'number'},
-                   {id: 'btc_usd_gm', label: 'BTC-USD GM', type: 'number'}]});
+                   {id: 'btc_usd_gm', label: 'BTC-USD GM', type: 'number'},
+                   {id: 'ppc_btc'   , label: 'PPC-BTC'   , type: 'number'},
+                   {id: 'ppc_btc_gm', label: 'PPC-BTC GM', type: 'number'},
+                   {id: 'ftc_btc'   , label: 'FTC-BTC'   , type: 'number'},
+                   {id: 'ftc_btc_gm', label: 'FTC-BTC GM', type: 'number'}]});
         
         
         var update = function() {
@@ -21,6 +25,8 @@ var initial;
                 var changeBTC_USD = getChange(c ? initial.btc_usd : last.btc_usd, last.btc_usd);
                 var changeLTC_USD = getChange(c ? initial.ltc_usd : last.ltc_usd, last.ltc_usd);
                 var changeLTC_BTC = getChange(c ? initial.ltc_btc : last.ltc_btc, last.ltc_btc);
+                var changePPC_BTC = getChange(c ? initial.ppc_btc : last.ppc_btc, last.ppc_btc);
+                var changeFTC_BTC = getChange(c ? initial.ftc_btc : last.ftc_btc, last.ftc_btc);
                 verlauf.addRow([
                     new Date(),
                     changeLTC_BTC,
@@ -29,9 +35,13 @@ var initial;
                     (c ? geometricMean(verlauf, 3, 20) : changeLTC_USD),
                     changeBTC_USD,
                     (c ? geometricMean(verlauf, 5, 20) : changeBTC_USD),
+                    changePPC_BTC,
+                    (c ? geometricMean(verlauf, 7, 20) : changePPC_BTC),
+                    changeFTC_BTC,
+                    (c ? geometricMean(verlauf, 9, 20) : changeFTC_BTC),
                 ]);
                 document.title = 'LTC-BTC: ' + last.ltc_btc + ', ' + changeLTC_BTC.toFixed(1) + '%';
-                $('#content li:first a').html(last.ltc_btc)
+                $('#content li:first a').html('LTC-BTC: ' + last.ltc_btc + ', ' + changeLTC_BTC.toFixed(1) + '%');
                 drawChart(verlauf);
             });
         };
