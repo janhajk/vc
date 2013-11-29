@@ -14,7 +14,8 @@ var drawChart = function(data) {
         silver: '#7A7A7A',
         blue: '#2155FF',
         gold: '#FFCC00',
-        green: '#51CF87'
+        green: '#51CF87',
+        purple: '#BF199B'
     };
     var options = {
         //title: 'Virtual Currency performance history',
@@ -26,7 +27,9 @@ var drawChart = function(data) {
             increaseBrightness(color.gold,50),
             color.gold,
             increaseBrightness(color.green,50),
-            color.green
+            color.green,
+            increaseBrightness(color.purple,50),
+            color.purple
         ]
     };
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
