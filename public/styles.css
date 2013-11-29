@@ -1,0 +1,47 @@
+#tabs-1 {
+    position: relative;
+}
+
+#news {
+    position: absolute;
+    top: 10px;
+    clear: both;
+    z-index: 1000;
+    width: 200px;
+    left: -20px;
+    overflow-y: auto;
+    height: 90vh;
+    padding-right: 20px;
+}
+.hyperlink {
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    font-size: 0.6em;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    margin-left: 2px;
+}
+
+.hyperlink:hover {
+    text-decoration: underline;
+    color: red;
+}
+
+
+.newsItem {
+    
+}
+
+.timestamp {
+    font-size: 8pt;
+    position: relative;
+    font-style: italic;
+    color: gray;
+}
+
+#news li {
+    list-style: none;
+    margin-bottom: 10px;
+    border-bottom: 1px solid black;
+}
