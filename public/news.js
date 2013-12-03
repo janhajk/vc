@@ -6,9 +6,9 @@
         
         var update = function() {
             $.getJSON('/news', function(data){
-                var items = [];
-                for (var key in data) {
-                    for (var i in data[key].items) {
+                var items = [], i, key;
+                for (key in data) {
+                    for (i in data[key].items) {
                         items.push(data[key].items[i]);
                     }
                 }
@@ -21,7 +21,7 @@
             });
         };     
         update();
-        setInterval(update, 1000*60);
+        setInterval(update, 5*1000*60);
         
         
         var htmlOneLine = function(item) {
@@ -29,6 +29,10 @@
             
             var div = document.createElement('div');
             div.className = 'newsItem';
+            
+            var divIcon = document.createElement('div');
+            var url = item.link === undefined ? '' : ((item.link.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i))[1]).replace(/\./g, '_');
+            divIcon.className = 'iconNews iconNews_' + url;
             
             var divTitle = document.createElement('a');
             divTitle.textContent = item.title;
@@ -47,6 +51,7 @@
             }
             
             div.appendChild(divTime);
+            div.appendChild(divIcon);
             div.appendChild(divTitle);
             li.appendChild(div);
             return li;

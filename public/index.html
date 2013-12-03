@@ -13,6 +13,7 @@
         <script type="text/javascript" src="htmlElements.js"></script>
         <script type="text/javascript" src="vc.js"></script>
         <script type="text/javascript" src="news.js"></script>
+        <script type="text/javascript" src="history.js"></script>
         
         <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="styles.css" />
@@ -26,14 +27,23 @@
         </div>
         <div id="content">
             <ul>
-                <li><a href="#tabs-1">Tab 1</a></li>
-                <li><a href="#tabs-2">Tab 2</a></li>
+                <li><a href="#tabs-1">Dashboard</a></li>
+                <li><a href="#tabs-2">Extra Charts</a></li>
+                <li><a href="#tabs-3">Settings</a></li>
             </ul> 
             <div id="tabs-1" class="box">
+                <div id="divCurrencyDisplaySelector">
+                    <ul>
+                    </ul>
+                </div>
                 <div id="news"></div>
-                <div id="chart_div" style="width: 100%; height: 100vh;"></div>
+                <div id="divChartHistory" style="width: 100%; height: 100vh;"></div>
             </div>
             <div id="tabs-2" class="box">
+                <div id="divChartDepth" style="width: 100%; height: 100vh;"></div>
+            </div>
+            <div id="tabs-3" class="box">
+                <div id="sliderUpdateInterval"></div><div id="labelUpdateInterval"></div>
             </div>
         </div>
         <div id="footer"></div>

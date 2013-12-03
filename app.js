@@ -2,7 +2,7 @@ var config   = require(__dirname + '/config.js');
 var express  = require('express');
 var path     = require('path');
 var fs       = require('fs');
-var BTCE     = require('btce');
+var stock    = require(__dirname + '/lib/stock.js');
 
 var db       = require(__dirname + '/database/database.js');
 var news     = require(__dirname + '/lib/news.js');
@@ -34,32 +34,15 @@ app.get('/', auth, function(req, res) {
 
 
 app.get('/ticker/update', auth, function(req, res) {
-    var btceTrade = new BTCE(config.btce_key, config.btce_sign);
-    var pairs = {
-        ltc_btc: undefined,
-        btc_usd: undefined,
-        ltc_usd: undefined,
-        ppc_btc: undefined,
-        ftc_btc: undefined
-    };
-    for (var pair in pairs) {
-        btceTrade.ticker({ pair: pair }, (function(pair){
-            return function(err, data) {
-                if (err) throw err;
-                else {
-                    pairs[pair] = data.ticker.last;
-                    var finish = true;
-                    for (var key in pairs) {
-                        if (pairs[key] === undefined) {
-                            finish = false;
-                            break;
-                        }
-                    }
-                    if (finish) res.json(pairs);
-                }
-            }
-        })(pair));
-    }
+    stock.ticker(function(error, data){
+        res.json(data);
+    });
+});
+
+app.get('/depth/update', auth, function(req, res){
+    stock.depth(function(data){
+        res.json(data);
+    });
 });
 
 app.get('/news', auth, function(req, res){
