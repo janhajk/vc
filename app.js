@@ -62,5 +62,5 @@ app.get('/news', auth, function(req, res){
 
 db.connect(function(){
     app.listen(app.get('port'));
-    stock.startCron(config.updateInterval !== undefined ? config.updateInterval : 2000);
+    stock.startCron(config.updateInterval !== undefined ? config.updateInterval*1000 : 2000);
 });
