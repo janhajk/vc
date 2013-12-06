@@ -44,6 +44,9 @@ $(function() {
         this.xAxis = {
             type: 'datetime'
         };
+        this.yAxis = {
+
+        };
     };
     
     historyChart.prototype.load = function() {
@@ -51,6 +54,10 @@ $(function() {
         this.loadDataHistory(function(last) {
             self.chart = new Highcharts.StockChart({
                 series: self.prepareHistoryData(last),
+                xAxis: self.xAxis,
+                //yAxis: self.yAxis,
+                rangeSelector: self.rangeSelector,
+                title: self.title,
                 chart : {
                     renderTo: self.divChart,
                     animation: false,
@@ -66,9 +73,6 @@ $(function() {
                         }
                     }
                 },
-                xAxis: self.xAxis,
-                rangeSelector: self.rangeSelector,
-                title: self.title,
             });
                 
         });
@@ -85,7 +89,7 @@ $(function() {
                             chart.series[s].addPoint(
                                 [
                                     last1[rate][0][0],
-                                    last1[rate][0][1]/self.initial[rate]*100-100
+                                    Math.round((last1[rate][0][1]/self.initial[rate]*100-100)*10)/10
                                 ],
                                 false,
                                 false
@@ -105,7 +109,10 @@ $(function() {
         for (rate in data) {
             this.initial[rate] = data[rate][data[rate].length-1][1];
             for (s in data[rate]) {
-                data[rate][s] = [data[rate][s][0], data[rate][s][1]/this.initial[rate]*100-100];
+                data[rate][s] = [
+                    data[rate][s][0],
+                    Math.round((data[rate][s][1]/this.initial[rate]*100-100)*10)/10
+                ];
             }
         }
         // make highchart eries-sets
