@@ -37,6 +37,10 @@ body {
     
 }
 
+#divChartHistory {
+    margin-left: 180px;
+}
+
 .timestamp {
     font-size: 8pt;
     position: relative;

@@ -32,12 +32,21 @@ app.get('/', auth, function(req, res) {
 });
 
 
-
-app.get('/ticker/update', auth, function(req, res) {
-    stock.ticker(function(error, data){
+app.get('/ticker/:n', auth, function(req, res){
+    stock.tickerN(req.param('n'), function(error, data){
         res.json(data);
     });
 });
+
+app.get('/ticker/last/:n', auth, function(req, res){
+    stock.lastN(req.param('n'), function(error, data){
+        res.json(data);
+    });
+});
+
+
+
+
 
 app.get('/depth/update', auth, function(req, res){
     stock.depth(function(data){
@@ -53,4 +62,5 @@ app.get('/news', auth, function(req, res){
 
 db.connect(function(){
     app.listen(app.get('port'));
+    stock.startCron(config.updateInterval !== undefined ? config.updateInterval : 2000);
 });

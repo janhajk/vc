@@ -14,4 +14,5 @@ exports.connect = function(callback) {
         });
 };
 
-//exports.movie = require('./movieDb.js');
+
+exports.btce = require('./btce.js');
