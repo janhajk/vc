@@ -1,5 +1,9 @@
 $( document ).ready(function() {
     
+    
+    /**
+     * Change Initial Values
+     */
     var settingsSetRate = function(rate) {
     
         var div    = document.createElement('div');
@@ -27,14 +31,43 @@ $( document ).ready(function() {
     };
     
     (function() {
+        settingsRate();
+        function settingsRate() {
+            if (history1.last1 !== null) {
+                var div = document.createElement('div');
+                div.textContent = 'Set initial Values:';
+                div.style.marginTop = '20px';
+                for (var key in history1.last1) {
+                    div.appendChild(settingsSetRate(key));
+                }
+                $('#tabs-3').append(div);
+            }
+            else {
+                setTimeout(settingsRate, 2000);
+            }
+        }
+    })();
+    
+    /**
+     * Change Number of History entries to load
+     */
+    (function() {
         var div = document.createElement('div');
-        div.textContent = 'Set initial Values:';
-        div.style.marginTop = '10px';
-        div.appendChild(settingsSetRate('btc_usd'));
-        div.appendChild(settingsSetRate('ltc_btc'));
-        div.appendChild(settingsSetRate('nmc_btc'));
-        div.appendChild(settingsSetRate('ftc_btc'));
-        div.appendChild(settingsSetRate('nvc_btc'));
+        div.textContent = 'Numbers of History Values to load:';
+        div.style.marginTop = '20px';
+        var input  = document.createElement('input');
+        input.style.marginLeft = '10px';
+        input.value = '10000';
+        var button = document.createElement('button');
+        button.textContent = 'set';
+        button.onclick = function() {
+            history1.historyBack = parseFloat(input.value); 
+            history1.destroy();
+            history1.load();
+            $('#content').tabs({active: 0});
+        };
+        div.appendChild(input);
+        div.appendChild(button);
         $('#tabs-3').append(div);
     })();
     

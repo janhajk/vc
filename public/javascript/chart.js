@@ -13,6 +13,7 @@ var historyChart = function(div) {
     this.divChart    = div;
     this.chart       = null;
     this.cronId      = null;
+    this.last1       = null;
     
     
     this.rangeSelector = {
@@ -31,7 +32,7 @@ var historyChart = function(div) {
         }, {
             count: 1,
             type: 'day',
-            text: '1D'
+            text: '24H'
         }, {
             type: 'all',
             text: 'All'
@@ -111,8 +112,10 @@ historyChart.prototype.prepareHistoryData = function(data) {
 };
 
 historyChart.prototype.cron = function(interval, chart) {
+    var self = this;
     this.cronId = setInterval(function() {
         $.getJSON('/ticker/last/1', function(last1) {
+            self.last1 = last1;
             var rate, s;
             for (rate in last1) {
                 for (s=0; s<chart.series.length;s++) {
