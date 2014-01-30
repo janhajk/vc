@@ -46,7 +46,7 @@ app.get('/ticker/last/:n', auth, function(req, res){
 });
 
 app.get('/altcoins', auth, function(req, res){
-    altcoins.data(function(data){
+    altcoins.getCoins(function(data){
         res.json(data);
     });
 });
@@ -68,5 +68,5 @@ app.get('/news', auth, function(req, res){
 db.connect(function(){
     app.listen(app.get('port'));
     stock.startCron(config.updateInterval !== undefined ? config.updateInterval*1000 : 2000);
-    altcoins.startCron(1000*60*60*1);
+    altcoins.startCron(1000*60*60*12);
 });
