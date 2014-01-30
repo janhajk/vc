@@ -16,3 +16,4 @@ exports.connect = function(callback) {
 
 
 exports.btce = require('./btce.js');
+exports.altcoins = require('./altcoins.js');

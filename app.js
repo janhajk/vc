@@ -3,6 +3,7 @@ var express  = require('express');
 var path     = require('path');
 var fs       = require('fs');
 var stock    = require(__dirname + '/lib/stock.js');
+var altcoins = require(__dirname + '/lib/altcoins.js');
 
 var db       = require(__dirname + '/database/database.js');
 var news     = require(__dirname + '/lib/news.js');
@@ -44,7 +45,11 @@ app.get('/ticker/last/:n', auth, function(req, res){
     });
 });
 
-
+app.get('/altcoins', auth, function(req, res){
+    altcoins.data(function(data){
+        res.json(data);
+    });
+});
 
 
 
@@ -63,4 +68,5 @@ app.get('/news', auth, function(req, res){
 db.connect(function(){
     app.listen(app.get('port'));
     stock.startCron(config.updateInterval !== undefined ? config.updateInterval*1000 : 2000);
+    altcoins.startCron(1000*60*60*1);
 });
